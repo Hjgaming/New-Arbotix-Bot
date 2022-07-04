@@ -10,7 +10,7 @@ module.exports = {
 
       //ok
       .setColor("ff1000")
-      .addField("<a:DS_crown2:840137047423320064> Vote my bot <a:DS_crown2:840137047423320064>","[Click here](https://top.gg/bot/984276280423886888/vote/)")
+      .addField("▪️ Vote my bot ▪️","[Click here](https://top.gg/bot/984276280423886888/vote/)")
 
       .setThumbnail("")
       .setImage("")
