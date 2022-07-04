@@ -54,7 +54,7 @@ module.exports = {
       .addField("💻 Bot Library", `\`\`\`discord.js\`\`\``)
       .addField(
         "💻 Invite Link Below",
-        `[Invite](https://discord.com/api/oauth2/authorize?client_id=878929654931677195&permissions=8&scope=bot)
+        `[Invite](https://discord.com/oauth2/authorize?client_id=984159878123765761&permissions=8&scope=applications.commands%20bot)
      `
       )
       .setImage(`${message.client.user.displayAvatarURL()}`)
