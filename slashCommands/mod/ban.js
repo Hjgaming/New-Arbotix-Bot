@@ -1,65 +1,56 @@
-const { CommandInteraction, MessageEmbed, Guild } = require("discord.js");
-
+const { Client, CommandInteraction, MessageEmbed } = require('discord.js');
 
 module.exports = {
-    name: "ban",
-    description: "Ban a member.",
-    category: "moderation",
-    cooldown: 0,
-    userPermissions: "ADMINISTRATOR",
-    botPermissions: "ADMINISTRATOR",
-    ownerOnly: false,
-    toggleOff: false,
+    name: 'ban',
+    description: 'Ban a user from the server',
     options: [
         {
-            name: "target",
-            description: "Select the target.",
-            type: "USER",
-            required: true
+            type: 9,
+            name: 'member',
+            description: 'Member to ban',
+            required: true,
         },
         {
-            name: "reason",
-            description: "Select a reason.",
-            type: "STRING",
-            required: true
-        }
+            type: 3,
+            name: 'reason',
+            description: 'Reason why you want to ban the member?',
+        },
     ],
+    userPermissions: ['BAN_MEMBERS'],
+    userperm: ['BAN_MEMBERS'],
+    botperm: ['BAN_MEMBERS'],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {Client} client
+     * @param {CommandInteraction} interaction
+     * @param {String[]} args
      */
-   run: async (client, interaction, args, message) => {
-        const target = interaction.options.getMember("target");
-        const reason = interaction.options.getString("reason");
-        await target.user.fetch();
-      if (interaction.guild.me.roles.highest.position <= target.roles.highest.position) return interaction.reply({
-        embeds: [new MessageEmbed()
-          .setColor(`RED`)
-          .setDescription(`I cannot ban this user as his role is the same or higher then mine.`)
-        ]
-      });
-             if (!target.bannable) return interaction.editReply({ embeds:[new MessageEmbed()
-        .setColor(`RED`)
-        .setDescription(`I cannot ban that member.`)]});
+    run: async (client, interaction, args) => {
+        const [member, reason] = args;
+        const memberFixed = await client.guilds.cache.get(interaction.guild.id).members.fetch(member);
 
-        const response = new MessageEmbed()
-            .setTitle( " __**Succesfully banned the target!**__")
-            .setColor("GREEN")
-            .setThumbnail(target.user.avatarURL({ dynamic: true }))
-            .setImage(target.user.bannerURL({ dynamic: true, size: 512 }) || "")
-            .addFields(
-                { name: "ID", value: target.user.id },
-                { name: "Ban Reason", value: reason },
-                { name: "Joined Server", value: `<t:${parseInt(target.joinedTimestamp / 1000)}:R>`, inline: true },
-                { name: "Account Created", value: `<t:${parseInt(target.user.createdTimestamp / 1000)}:R>`, inline: true },
-            );
+        if (interaction.member.roles.highest <= memberFixed.roles.highest.position)
+            return interaction.followUp({
+                content: "You can't punish because u either have the same role or your role is lower.",
+                ephemeral: true,
+            });
 
-        interaction.editReply({ embeds: [response]});
-           await target.send({ embeds:[new MessageEmbed()
-        .setTitle(`You have been banned from ${interaction.guild.name}`)
-        .setDescription(`**Reason for being banned:**\n${reason}`)
-        .setColor(`RED`)
-        .setFooter(`by ${interaction.user.tag}`)
-        .setTimestamp()]}).catch(err => console.log('I was unable to message the member.'));
-        target.ban({ days: 0, reason: reason});
-    }
-}
+        const reason_fixed = reason || 'No Reason Provided';
+        const memberPfp = client.users.cache.get(memberFixed.id).displayAvatarURL({ size: 512, dynamic: true });
+        const embed = new MessageEmbed()
+            .setTitle(`Successfully banned ${memberFixed.user.username} from this server!`)
+            .setThumbnail(memberPfp)
+            .addField('Banned User', `${memberFixed}`)
+            .addField('Moderator', `<@${interaction.user.id}>`)
+            .addField('Reason', `${reason_fixed}`)
+            .setColor('RED')
+            .setTimestamp();
+
+        await memberFixed.ban({ reason }).catch(err =>
+            interaction.followUp({
+                content: `An error has occured while trying to ban!\nError message :\n\`\`\`yml\n${err}\n\`\`\``,
+                ephemeral: true,
+            })
+        );
+        interaction.followUp({ embeds: [embed] });
+    },
+};
