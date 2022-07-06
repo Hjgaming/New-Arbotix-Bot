@@ -93,7 +93,6 @@ module.exports = {
           **System:** ${user.system ? "Yes" : "No"}
           **Created At:** ${createdAt}
           **Avatar:** [Link Here](${member.displayAvatarURL({ dynamic: true })})
-          **Status:** ${status}
           **Activivty:** ${
             member.presence?.activities[0]
               ? member.presence?.activities[0].name
