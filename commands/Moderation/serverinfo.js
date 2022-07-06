@@ -47,7 +47,6 @@ module.exports = {
                 { name: `**Server Owner:**`, value: `\`\`\`${serverOwner.tag}\`\`\``, inline: true },
                 { name: `**Server Members [ ${totalMembers} ]:**`, value: `\`\`\`Members: ${humanMembers} | Bots: ${botMembers}\`\`\``, inline: false },
                 { name: `**Server ID:**`, value: `\`\`\`${guild.id}\`\`\``, inline: true },
-                { name: `**Bot Prefix:**`, value: `\`\`\`${client.config.prefix}\`\`\``, inline: true },
                 { name: `**Server Emojis [ ${totalEmojis} ]:**`, value: `\`\`\`Normal: ${normalEmojis} | Animated: ${animatedEmojis}\`\`\``, inline: false },
                 { name: `**Server Categories and Channels [ ${totalChannels} ]:**`, value: `\`\`\`Categories: ${categories} | Text: ${textChannels} | Voice: ${voiceChannels} | Announcement: ${newsChannels} | Stage: ${stageChannels}\`\`\``, inline: false },
                 { name: `**Server Boost Level:**`, value: `\`\`\`${boostLevel}\`\`\``.replace("NONE", "0"), inline: true },
