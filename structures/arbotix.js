@@ -144,7 +144,7 @@ client.on("message", async message => {
         .setTimestamp()
         .setColor('RANDOM')
         .setFooter(`I'm in ${client.guilds.cache.size} Guilds Now!`);
-    channel.send(embed);
+    channel.send({embeds: [embed]});
 }); 
 
 //left
@@ -160,7 +160,7 @@ client.on('guildDelete', guild =>{
         .setTimestamp()
         .setColor('RED')
         .setFooter(`I'm in ${client.guilds.cache.size} Guilds Now!`);
-    channel.send(embed);
+    channel.send({embeds: [embed]});
 }); 
 
 
