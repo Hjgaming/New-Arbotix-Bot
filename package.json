@@ -4,7 +4,7 @@
   "description": "• USE THIS BOT GIVE CREDIT.",
   "main": "index.js",
   "dependencies": {
-    "@discordjs/opus": "^0.3.3",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.10.0",
     "Utils": "^1.0.39",
     "aki-api": "^6.0.8",
